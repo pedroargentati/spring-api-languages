@@ -41,7 +41,7 @@ public class LinguagemController {
 	}
 
 	@PostMapping
-	public Linguagem inserirLinguagem(@RequestBody Linguagem linguagemVo) {
+	public Linguagem incluirLinguagem(@RequestBody Linguagem linguagemVo) {
 		return repositorio.save(linguagemVo);
 	}
 
@@ -63,6 +63,22 @@ public class LinguagemController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Registro não encontrado.");
 		repositorio.delete(linguagemVo.get());
 		return ResponseEntity.status(HttpStatus.OK).body("Registro excluído com sucesso.");
+	}
+	
+	@PostMapping("/bulk")
+	public ResponseEntity<Object> incluirListaLinguagem(@RequestBody List<Linguagem> listaLinguagem) {
+		for(Linguagem linguagemVo : listaLinguagem) {
+			repositorio.save(linguagemVo);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Registros inclúidos com sucesso.");
+	}
+	
+	@DeleteMapping("/bulk")
+	public ResponseEntity<Object> excluirListaLinguagem(@RequestBody List<Linguagem> listaLinguagem) {
+		for(Linguagem linguagemVo: listaLinguagem) {
+			repositorio.delete(linguagemVo);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Registros excluídos com sucesso.");
 	}
 
 }
